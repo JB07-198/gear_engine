@@ -1,0 +1,8 @@
+{
+  "name": "gear1",
+  "type": "spur",
+  "module": 2.0,
+  "teeth": 20,
+  "face_width": 10.0,
+  "pressure_angle": 20.0
+}
