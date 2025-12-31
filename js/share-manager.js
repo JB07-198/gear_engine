@@ -104,53 +104,130 @@ class ShareManager {
 
     loadDesignFromURL() {
         const params = new URLSearchParams(window.location.search);
+
+        // Support both ?design=type=... encoded param and direct query params (?teeth=20&module=2...)
         const designParams = params.get('design');
 
-        if (!designParams) return;
+        let urlParams;
+        if (designParams) {
+            try {
+                urlParams = new URLSearchParams(designParams);
+            } catch (e) {
+                console.error('Error parsing design param:', e);
+                return;
+            }
+        } else if (params && params.toString()) {
+            // Use direct query params
+            urlParams = params;
+        } else {
+            return;
+        }
 
         try {
-            const urlParams = new URLSearchParams(designParams);
-            const gearType = urlParams.get('type');
+            // Determine gear type: explicit 'type' or infer from keys
+            let gearType = urlParams.get('type') || urlParams.get('gear_type');
 
-            if (!gearType) return;
-
-            // Set gear type
-            const gearTypeSelect = document.getElementById('gearType');
-            if (gearTypeSelect) {
-                gearTypeSelect.value = gearType;
-                gearTypeSelect.dispatchEvent(new Event('change'));
+            if (!gearType) {
+                // Heuristics to infer gear type from parameters
+                const keys = Array.from(urlParams.keys());
+                if (keys.includes('helix_angle') || keys.includes('helixAngle') || keys.includes('helix')) {
+                    gearType = 'helical';
+                } else if (keys.includes('pitch_angle') || keys.includes('pitchAngle')) {
+                    gearType = 'bevel';
+                } else if (keys.includes('rim_thickness')) {
+                    gearType = 'internal';
+                } else if (keys.includes('sun_teeth') || keys.includes('ring_teeth') || keys.includes('num_planets') || keys.includes('planet_teeth')) {
+                    gearType = 'planetary';
+                } else if (keys.includes('length') && keys.includes('height') && !keys.includes('teeth')) {
+                    gearType = 'rack';
+                } else if (keys.includes('threads') || keys.includes('lead_angle')) {
+                    gearType = 'worm';
+                } else {
+                    gearType = 'spur';
+                }
             }
 
-            // Set parameters
+            // Switch gear type UI by clicking the corresponding button (keeps behavior consistent)
+            const btn = document.querySelector(`.gear-type-btn[data-type="${gearType}"]`);
+            if (btn) btn.click();
+
+            // Populate inputs for the selected gear type
             setTimeout(() => {
+                const group = document.getElementById(`${gearType}-params`);
+
+                const applied = [];
                 urlParams.forEach((value, key) => {
-                    if (key !== 'type') {
-                        const input = document.getElementById(key);
-                        if (input) {
-                            input.value = value;
-                        }
+                    if (key === 'type' || key === 'gear_type' || key === 'design') return;
+
+                    // Priority 1: input inside the gear-type group with matching name
+                    let input = null;
+                    if (group) input = group.querySelector(`[name="${key}"]`) || group.querySelector(`#${gearType}_${key}`);
+
+                    // Priority 2: element with id matching prefixed id
+                    if (!input) input = document.getElementById(`${gearType}_${key}`);
+
+                    // Priority 3: any input with name matching key
+                    if (!input) input = document.querySelector(`[name="${key}"]`);
+
+                    // Priority 4: direct id match
+                    if (!input) input = document.getElementById(key);
+
+                    // Special-case common aliases
+                    if (!input) {
+                        const aliasMap = {
+                            'bore_diameter': 'bore',
+                            'face_width': 'face_width',
+                            'pressure_angle': 'pressure_angle',
+                            'helix_angle': 'helix_angle',
+                            'pitch_angle': 'pitch_angle',
+                            'rim_thickness': 'rim_thickness',
+                            'sun_teeth': 'sun_teeth',
+                            'planet_teeth': 'planet_teeth',
+                            'ring_teeth': 'ring_teeth',
+                            'num_planets': 'num_planets',
+                            'threads': 'threads',
+                            'lead_angle': 'lead_angle'
+                        };
+                        const alias = aliasMap[key];
+                        if (alias) input = document.getElementById(`${gearType}_${alias}`) || document.querySelector(`#${gearType}-params [name="${alias}"]`);
+                    }
+
+                    if (input) {
+                        input.value = value;
+                        applied.push(key);
+                    } else {
+                        // console.debug: unmatched param
+                        console.debug(`No input found for param '${key}' in gear type '${gearType}'`);
                     }
                 });
 
-                // Show notification
-                const msg = document.createElement('div');
-                msg.style.cssText = `
-                    background: var(--primary-color);
-                    color: white;
-                    padding: 12px 16px;
-                    border-radius: var(--radius-md);
-                    margin-bottom: 15px;
-                    font-size: 14px;
-                `;
-                msg.textContent = '✓ Design loaded from shared link';
-                document.querySelector('.generator-left').insertBefore(msg, document.querySelector('.param-group'));
+                // Show notification if any parameters applied
+                if (applied.length > 0) {
+                    const msg = document.createElement('div');
+                    msg.style.cssText = `
+                        background: var(--primary-color);
+                        color: white;
+                        padding: 12px 16px;
+                        border-radius: var(--radius-md);
+                        margin-bottom: 15px;
+                        font-size: 14px;
+                    `;
+                    msg.textContent = `✓ Loaded ${applied.length} parameter(s) for ${gearType} gear`;
+                    document.querySelector('.generator-left').insertBefore(msg, document.querySelector('.param-group'));
 
-                setTimeout(() => msg.remove(), 3000);
+                    setTimeout(() => msg.remove(), 3800);
+
+                    // Auto-generate the gear once parameters are loaded
+                    if (window.formManager && typeof formManager.onGenerateClick === 'function') {
+                        // slight delay to ensure UI updates
+                        setTimeout(() => formManager.onGenerateClick(), 200);
+                    }
+                }
 
                 if (window.eventBus) {
                     eventBus.emit('design-loaded', { gearType, parameters: Object.fromEntries(urlParams) });
                 }
-            }, 100);
+            }, 120);
 
         } catch (e) {
             console.error('Error loading design from URL:', e);
