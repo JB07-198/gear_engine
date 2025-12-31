@@ -355,3 +355,20 @@ document.addEventListener('keydown', (e) => {
         console.log(message);
     }
 });
+
+// Fallback: ensure generate button always triggers generation handler with safe error reporting
+document.addEventListener('click', (e) => {
+    const target = e.target instanceof Element ? (e.target.closest ? e.target.closest('#generateBtn') : null) : null;
+    if (target) {
+        try {
+            if (window.formManager && typeof formManager.onGenerateClick === 'function') {
+                formManager.onGenerateClick();
+            } else {
+                console.warn('formManager not available when clicking Generate');
+            }
+        } catch (err) {
+            console.error('Error while handling Generate click:', err);
+            alert('An error occurred while generating the gear. Check the console for details.');
+        }
+    }
+});

@@ -496,5 +496,5 @@ class FormManager {
         return [...this.history];
     }
 
-// Create global form manager instance
-const formManager = new FormManager();
+// Create global form manager instance and expose to window for other scripts
+window.formManager = new FormManager();
