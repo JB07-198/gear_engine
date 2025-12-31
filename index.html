@@ -1,61 +1,721 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Gear Engine</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: #e5e7eb;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      text-align: center;
-    }
-    .card {
-      background: #020617;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 0 30px rgba(0,0,0,0.5);
-      max-width: 500px;
-    }
-    h1 {
-      margin-bottom: 10px;
-    }
-    p {
-      color: #94a3b8;
-    }
-    a {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 10px 20px;
-      background: #2563eb;
-      color: white;
-      text-decoration: none;
-      border-radius: 6px;
-    }
-    a:hover {
-      background: #1d4ed8;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gear Engine - Web-Based Gear Generator</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/responsive.css">
+    <link rel=\"icon\" href=\"logo.png\" type=\"image/png\">
 </head>
 <body>
-  <div class="card">
-    <h1>⚙️ Gear Engine</h1>
-    <p>Système de conception et simulation d'engrenages</p>
-    <p>Projet Python • CLI • GUI • Tests • Docker</p>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <img src="logo.png" alt="Gear Engine" class="loading-logo">
+            <h2>Gear Engine</h2>
+            <p>Generating your gear...</p>
+            <div class="spinner"></div>
+        </div>
+    </div>
 
-    <a href="https://github.com/JB07-198/gear_engine" target="_blank">
-      Voir le projet sur GitHub
-    </a>
+    <!-- Navigation Header -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-brand" onclick="navigateToSection('home')" style="cursor: pointer;">
+                <img src="logo.png" alt="Gear Engine Logo" class="logo-img">
+                <span class="brand-text">Gear Engine</span>
+            </div>
+            <nav class="navbar-nav">
+                <a href="#home" class="nav-link active" data-section="home">Home</a>
+                <a href="#generator" class="nav-link" data-section="generator">Generator</a>
+                <a href="#documentation" class="nav-link" data-section="documentation">Docs</a>
+                <a href="#about" class="nav-link" data-section="about">About</a>
+            </nav>
+            <button class="theme-toggle" id="themeToggle" title="Toggle dark/light mode">🌙</button>
+            <button class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
 
-    <p style="margin-top:20px;font-size:12px;">
-      Hébergé avec GitHub Pages 🚀
-    </p>
-  </div>
+    <!-- Mobile Navigation Menu -->
+    <nav class="mobile-nav" id="mobileNav">
+        <a href="#home" class="mobile-nav-link" data-section="home">Home</a>
+        <a href="#generator" class="mobile-nav-link" data-section="generator">Generator</a>
+        <a href="#documentation" class="mobile-nav-link" data-section="documentation">Docs</a>
+        <a href="#about" class="mobile-nav-link" data-section="about">About</a>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="main-container">
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="hero">
+                <div class="hero-content">
+                    <h1 class="hero-title">Gear Engine</h1>
+                    <p class="hero-subtitle">Professional Open-Source Gear Generation System</p>
+                    <p class="hero-description">
+                        Design and generate precision gears with a modern, intuitive interface. 
+                        Export to STEP and STL formats for manufacturing and simulation.
+                    </p>
+                    <button class="btn btn-primary btn-lg" onclick="navigateToSection('generator')">
+                        Start Designing
+                    </button>
+                </div>
+                <div class="hero-image">
+                    <svg class="hero-gear" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="100" cy="100" r="60" fill="none" stroke="#4A90E2" stroke-width="8"/>
+                        <circle cx="100" cy="100" r="45" fill="none" stroke="#4A90E2" stroke-width="2"/>
+                        <circle cx="100" cy="100" r="12" fill="#4A90E2"/>
+                        <g id="hero-teeth">
+                            <rect x="98" y="20" width="4" height="20" fill="#4A90E2"/>
+                            <rect x="98" y="160" width="4" height="20" fill="#4A90E2"/>
+                            <rect x="20" y="98" width="20" height="4" fill="#4A90E2"/>
+                            <rect x="160" y="98" width="20" height="4" fill="#4A90E2"/>
+                            <rect x="28.2" y="28.2" width="4" height="20" transform="rotate(45 30.2 38.2)" fill="#4A90E2"/>
+                            <rect x="167.8" y="167.8" width="4" height="20" transform="rotate(45 169.8 177.8)" fill="#4A90E2"/>
+                            <rect x="171.8" y="28.2" width="4" height="20" transform="rotate(-45 173.8 38.2)" fill="#4A90E2"/>
+                            <rect x="32.2" y="167.8" width="4" height="20" transform="rotate(-45 34.2 177.8)" fill="#4A90E2"/>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <section class="features">
+                <h2 class="section-title">Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">⚙️</div>
+                        <h3>7 Gear Types</h3>
+                        <p>Spur, Helical, Bevel, Internal, Planetary, Rack, and Worm gears</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎨</div>
+                        <h3>3D Preview</h3>
+                        <p>Real-time interactive 3D visualization with rotation controls</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📥</div>
+                        <h3>Multiple Exports</h3>
+                        <p>Download generated gears as STEP or STL files</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <h3>Responsive Design</h3>
+                        <p>Works seamlessly on desktop, tablet, and mobile devices</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>Real-Time Updates</h3>
+                        <p>Instant parameter validation and preview updates</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔓</div>
+                        <h3>Open Source</h3>
+                        <p>Free to use, modify, and distribute under open-source license</p>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Generator Section -->
+        <section id="generator" class="section">
+            <div class="generator-container">
+                <!-- Left Panel: Controls -->
+                <div class="generator-left">
+                    <h2>Gear Generator</h2>
+
+                    <!-- Gear Type Selector -->
+                    <div class="control-group">
+                        <label for="gearType" class="label-title">Gear Type</label>
+                        <div class="gear-type-buttons">
+                            <button class="gear-type-btn active" data-type="spur">Spur</button>
+                            <button class="gear-type-btn" data-type="helical">Helical</button>
+                            <button class="gear-type-btn" data-type="bevel">Bevel</button>
+                            <button class="gear-type-btn" data-type="internal">Internal</button>
+                            <button class="gear-type-btn" data-type="planetary">Planetary</button>
+                            <button class="gear-type-btn" data-type="rack">Rack</button>
+                            <button class="gear-type-btn" data-type="worm">Worm</button>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Parameters Form -->
+                    <form id="gearForm" class="parameters-form">
+                        <!-- Spur Gear Parameters -->
+                        <div id="spur-params" class="param-group active">
+                            <div class="form-group">
+                                <label for="spur_teeth">Number of Teeth</label>
+                                <input type="number" id="spur_teeth" name="teeth" min="8" max="500" value="20" required>
+                                <div class="param-help">Number of teeth on the gear (8-500)</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="spur_module">Module (mm)</label>
+                                <input type="number" id="spur_module" name="module" min="0.5" max="50" step="0.5" value="2" required>
+                                <div class="param-help">Gear module defines tooth size (0.5-50)</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="spur_pressure_angle">Pressure Angle (°)</label>
+                                <input type="number" id="spur_pressure_angle" name="pressure_angle" min="14.5" max="30" step="0.5" value="20" required>
+                                <div class="param-help">Standard: 20°. Also common: 14.5°, 25°</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="spur_face_width">Face Width (mm)</label>
+                                <input type="number" id="spur_face_width" name="face_width" min="1" max="100" step="0.5" value="10" required>
+                                <div class="param-help">Width of the gear face (1-100)</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="spur_bore">Bore Diameter (mm)</label>
+                                <input type="number" id="spur_bore" name="bore_diameter" min="1" max="200" step="0.5" value="10" required>
+                                <div class="param-help">Center hole diameter for mounting (1-200)</div>
+                            </div>
+                        </div>
+
+                        <!-- Helical Gear Parameters -->
+                        <div id="helical-params" class="param-group">
+                            <div class="form-group">
+                                <label for="helical_teeth">Number of Teeth</label>
+                                <input type="number" id="helical_teeth" name="teeth" min="8" max="500" value="20" required>
+                                <div class="param-help">Number of teeth on the gear (8-500)</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="helical_module">Module (mm)</label>
+                                <input type="number" id="helical_module" name="module" min="0.5" max="50" step="0.5" value="2" required>
+                                <div class="param-help">Gear module defines tooth size (0.5-50)</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="helical_pressure_angle">Pressure Angle (°)</label>
+                                <input type="number" id="helical_pressure_angle" name="pressure_angle" min="14.5" max="30" step="0.5" value="20" required>
+                                <div class="param-help">Standard: 20°</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="helical_helix_angle">Helix Angle (°)</label>
+                                <input type="number" id="helical_helix_angle" name="helix_angle" min="1" max="45" step="0.5" value="15" required>
+                                <div class="param-help">Helix angle determines the twist (1-45°)</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="helical_face_width">Face Width (mm)</label>
+                                <input type="number" id="helical_face_width" name="face_width" min="1" max="100" step="0.5" value="10" required>
+                                <div class="param-help">Width of the gear face (1-100)</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="helical_bore">Bore Diameter (mm)</label>
+                                <input type="number" id="helical_bore" name="bore_diameter" min="1" max="200" step="0.5" value="10" required>
+                                <div class="param-help">Center hole diameter for mounting (1-200)</div>
+                            </div>
+                        </div>
+
+                        <!-- Bevel Gear Parameters -->
+                        <div id="bevel-params" class="param-group">
+                            <div class="form-group">
+                                <label for="bevel_teeth">Number of Teeth</label>
+                                <input type="number" id="bevel_teeth" name="teeth" min="8" max="500" value="20" required>
+                                <div class="param-help">Number of teeth on the gear (8-500)</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="bevel_module">Module (mm)</label>
+                                <input type="number" id="bevel_module" name="module" min="0.5" max="50" step="0.5" value="2" required>
+                                <div class="param-help">Gear module defines tooth size (0.5-50)</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="bevel_pressure_angle">Pressure Angle (°)</label>
+                                <input type="number" id="bevel_pressure_angle" name="pressure_angle" min="14.5" max="30" step="0.5" value="20" required>
+                                <div class="param-help">Standard: 20°</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="bevel_pitch_angle">Pitch Angle (°)</label>
+                                <input type="number" id="bevel_pitch_angle" name="pitch_angle" min="10" max="80" step="0.5" value="45" required>
+                                <div class="param-help">Angle between intersecting shafts (10-80°)</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="bevel_face_width">Face Width (mm)</label>
+                                <input type="number" id="bevel_face_width" name="face_width" min="1" max="100" step="0.5" value="10" required>
+                                <div class="param-help">Width of the gear face (1-100)</div>
+                            </div>
+                        </div>
+
+                        <!-- Internal Gear Parameters -->
+                        <div id="internal-params" class="param-group">
+                            <div class="form-group">
+                                <label for="internal_teeth">Number of Teeth</label>
+                                <input type="number" id="internal_teeth" name="teeth" min="12" max="500" value="40" required>
+                                <div class="param-help">Number of internal teeth (12-500)</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="internal_module">Module (mm)</label>
+                                <input type="number" id="internal_module" name="module" min="0.5" max="50" step="0.5" value="2" required>
+                                <div class="param-help">Gear module defines tooth size (0.5-50)</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="internal_pressure_angle">Pressure Angle (°)</label>
+                                <input type="number" id="internal_pressure_angle" name="pressure_angle" min="14.5" max="30" step="0.5" value="20" required>
+                                <div class="param-help">Standard: 20°</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="internal_rim_thickness">Rim Thickness (mm)</label>
+                                <input type="number" id="internal_rim_thickness" name="rim_thickness" min="0.5" max="50" step="0.5" value="5" required>
+                                <div class="param-help">Minimum thickness of gear rim (0.5-50)</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="internal_face_width">Face Width (mm)</label>
+                                <input type="number" id="internal_face_width" name="face_width" min="1" max="100" step="0.5" value="10" required>
+                                <div class="param-help">Width of the gear face (1-100)</div>
+                            </div>
+                        </div>
+
+                        <!-- Planetary Gear Parameters -->
+                        <div id="planetary-params" class="param-group">
+                            <div class="form-group">
+                                <label for="planetary_sun_teeth">Sun Gear Teeth</label>
+                                <input type="number" id="planetary_sun_teeth" name="sun_teeth" min="8" max="200" value="20" required>
+                                <div class="param-help">Number of teeth on sun gear (8-200)</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="planetary_planet_teeth">Planet Gear Teeth</label>
+                                <input type="number" id="planetary_planet_teeth" name="planet_teeth" min="8" max="200" value="20" required>
+                                <div class="param-help">Number of teeth on each planet gear (8-200)</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="planetary_ring_teeth">Ring Gear Teeth</label>
+                                <input type="number" id="planetary_ring_teeth" name="ring_teeth" min="16" max="400" value="60" required>
+                                <div class="param-help">Number of teeth on ring gear (must be > sum of sun + 2×planet)</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="planetary_module">Module (mm)</label>
+                                <input type="number" id="planetary_module" name="module" min="0.5" max="50" step="0.5" value="2" required>
+                                <div class="param-help">Gear module (must be same for all gears)</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="planetary_num_planets">Number of Planets</label>
+                                <input type="number" id="planetary_num_planets" name="num_planets" min="3" max="5" value="3" required>
+                                <div class="param-help">Number of planet gears (3-5)</div>
+                            </div>
+                        </div>
+
+                        <!-- Rack Gear Parameters -->
+                        <div id="rack-params" class="param-group">
+                            <div class="form-group">
+                                <label for="rack_teeth">Number of Teeth</label>
+                                <input type="number" id="rack_teeth" name="teeth" min="10" max="500" value="20" required>
+                                <div class="param-help">Number of teeth on the rack (10-500)</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="rack_module">Module (mm)</label>
+                                <input type="number" id="rack_module" name="module" min="0.5" max="50" step="0.5" value="2" required>
+                                <div class="param-help">Gear module defines tooth size (0.5-50)</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="rack_pressure_angle">Pressure Angle (°)</label>
+                                <input type="number" id="rack_pressure_angle" name="pressure_angle" min="14.5" max="30" step="0.5" value="20" required>
+                                <div class="param-help">Standard: 20°</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="rack_length">Length (mm)</label>
+                                <input type="number" id="rack_length" name="length" min="10" max="500" step="0.5" value="50" required>
+                                <div class="param-help">Length of the rack (10-500)</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="rack_height">Height (mm)</label>
+                                <input type="number" id="rack_height" name="height" min="1" max="100" step="0.5" value="10" required>
+                                <div class="param-help">Height of the rack (1-100)</div>
+                            </div>
+                        </div>
+
+                        <!-- Worm Gear Parameters -->
+                        <div id="worm-params" class="param-group">
+                            <div class="form-group">
+                                <label for="worm_threads">Number of Threads</label>
+                                <input type="number" id="worm_threads" name="threads" min="1" max="8" value="1" required>
+                                <div class="param-help">Number of threads (1-8)</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="worm_module">Module (mm)</label>
+                                <input type="number" id="worm_module" name="module" min="0.5" max="50" step="0.5" value="2" required>
+                                <div class="param-help">Gear module defines tooth size (0.5-50)</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="worm_lead_angle">Lead Angle (°)</label>
+                                <input type="number" id="worm_lead_angle" name="lead_angle" min="1" max="45" step="0.5" value="10" required>
+                                <div class="param-help">Lead angle of the worm (1-45°)</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="worm_diameter">Diameter (mm)</label>
+                                <input type="number" id="worm_diameter" name="diameter" min="5" max="100" step="0.5" value="20" required>
+                                <div class="param-help">Worm diameter (5-100)</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="worm_length">Length (mm)</label>
+                                <input type="number" id="worm_length" name="length" min="10" max="500" step="0.5" value="50" required>
+                                <div class="param-help">Length of the worm (10-500)</div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+                            <button type="button" class="btn btn-primary" id="generateBtn">Generate Gear</button>
+                        </div>
+                    </form>
+
+                    <!-- Error Messages -->
+                    <div id="errorMessage" class="alert alert-error" style="display: none;"></div>
+                    <div id="successMessage" class="alert alert-success" style="display: none;"></div>
+                </div>
+
+                <!-- Right Panel: 3D Preview and Export -->
+                <div class="generator-right">
+                    <!-- 3D Visualization -->
+                    <div class="preview-container">
+                        <div id="canvas3d" class="canvas-3d"></div>
+                        <div class="preview-controls">
+                            <button class="preview-btn" id="resetViewBtn" title="Reset View">
+                                <span>⟲</span>
+                            </button>
+                            <button class="preview-btn" id="downloadStepBtn" title="Download STEP" disabled>
+                                <span>📄 STEP</span>
+                            </button>
+                            <button class="preview-btn" id="downloadStlBtn" title="Download STL" disabled>
+                                <span>📦 STL</span>
+                            </button>
+                        </div>
+                        <div class="loading-spinner" id="loadingSpinner" style="display: none;">
+                            <div class="spinner"></div>
+                            <p>Generating gear...</p>
+                        </div>
+                    </div>
+
+                    <!-- Gear Properties Display -->
+                    <div class="properties-panel">
+                        <h3>Gear Properties</h3>
+                        <div id="propertiesContent" class="properties-list">
+                            <p class="placeholder-text">Select parameters and generate a gear to see properties</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Documentation Section -->
+        <section id="documentation" class="section">
+            <div class="docs-container">
+                <h2>Documentation</h2>
+                <div class="docs-grid">
+                    <article class="doc-card">
+                        <h3>Gear Types Guide</h3>
+                        <h4>Spur Gears</h4>
+                        <p>The most common type of gears with teeth parallel to the axis of rotation. They are efficient for parallel shaft applications with high power transmission.</p>
+                        <h4>Helical Gears</h4>
+                        <p>Similar to spur gears but with angled teeth. They provide smoother, quieter operation and better load distribution. Used in automotive transmissions.</p>
+                        <h4>Bevel Gears</h4>
+                        <p>Conical gears used to transmit motion between intersecting shafts at any angle. Common in differential assemblies and angle drives.</p>
+                        <h4>Internal Gears</h4>
+                        <p>Ring gears with teeth pointing inward. Used in planetary gear systems and compact gear arrangements. Mesh with external pinions.</p>
+                        <h4>Planetary Gears</h4>
+                        <p>A system consisting of sun, planet, and ring gears. Provides multiple speed ratios and compact design. Used in automatics and multi-speed transmissions.</p>
+                        <h4>Rack Gears</h4>
+                        <p>Linear gear with teeth cut along its length. Meshes with a pinion to convert rotary to linear motion or vice versa. Used in steering systems and lifts.</p>
+                        <h4>Worm Gears</h4>
+                        <p>Screw-like gear that meshes with a worm wheel. Provides high reduction ratios with compact design. Self-locking characteristic is beneficial in safety applications.</p>
+                    </article>
+
+                    <article class="doc-card">
+                        <h3>Parameter Definitions</h3>
+                        <h4>Number of Teeth</h4>
+                        <p>The count of teeth on the gear. More teeth create a larger gear diameter for the same module.</p>
+                        <h4>Module</h4>
+                        <p>The ratio of pitch diameter to number of teeth. Determines tooth size. Standard metric values: 0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10, 12, 16, 20.</p>
+                        <h4>Pressure Angle</h4>
+                        <p>The angle between the tooth surface and the pitch circle. Standard values are 20° (most common), 14.5° (older), and 25° (heavy-duty).</p>
+                        <h4>Face Width</h4>
+                        <p>The length of the gear teeth along the axis of rotation. Affects load capacity and noise characteristics.</p>
+                        <h4>Bore Diameter</h4>
+                        <p>The diameter of the center hole for mounting on a shaft. Must be less than the gear's root diameter.</p>
+                        <h4>Helix Angle</h4>
+                        <p>For helical gears, the angle at which teeth are cut relative to the axis. Typical range: 15-30°.</p>
+                        <h4>Pitch Angle</h4>
+                        <p>For bevel gears, the angle between intersecting shaft axes. Directly affects the gear mesh geometry.</p>
+                    </article>
+
+                    <article class="doc-card">
+                        <h3>Standards & References</h3>
+                        <h4>ISO 53:1998</h4>
+                        <p>Defines tooth forms of cylindrical gears with involute flanks. Specifies gear tooth geometry for spur, helical, and other gear types.</p>
+                        <h4>ISO 21771:2007</h4>
+                        <p>Covers cylindrical gears with involute flanks for general applications. Includes quality and manufacturing specifications.</p>
+                        <h4>Involute Profile</h4>
+                        <p>The most common tooth profile, where teeth follow an involute of a circle. Provides consistent velocity ratios and smooth meshing across various center distances.</p>
+                        <h4>Module System</h4>
+                        <p>The metric gear system using module (mm) instead of diametral pitch. Simplifies calculations and is the international standard.</p>
+                    </article>
+
+                    <article class="doc-card">
+                        <h3>Export Formats</h3>
+                        <h4>STEP Files (.step)</h4>
+                        <p>Standard for the Exchange of Product Data. Universal CAD format compatible with virtually all CAD software. Best for design review and modification.</p>
+                        <h4>STL Files (.stl)</h4>
+                        <p>Stereolithography format for 3D printing and rapid prototyping. Available in both ASCII and binary formats. Ideal for 3D printing and simulation.</p>
+                        <h4>Usage Tips</h4>
+                        <p>Use STEP for CAD modifications and manufacturing. Use STL for 3D printing and FEA analysis. Always verify dimensions and tooth profiles in your CAD software before manufacturing.</p>
+                    </article>
+
+                    <article class="doc-card">
+                        <h3>Design Guidelines</h3>
+                        <h4>Module Selection</h4>
+                        <p>Choose module based on power transmission needs and space constraints. Larger modules support higher loads.</p>
+                        <h4>Tooth Count Ratios</h4>
+                        <p>Ensure minimum teeth counts (8+ for spur) to avoid interference. High reduction ratios may require multiple stages.</p>
+                        <h4>Material Considerations</h4>
+                        <p>Steel gears handle higher loads and speeds. Aluminum suits light-duty applications. Verify material fatigue limits for your application.</p>
+                        <h4>Bore Size</h4>
+                        <p>Leave adequate rim thickness between bore and root diameter. Typically 1.5-2× module as minimum rim thickness.</p>
+                    </article>
+
+                    <article class="doc-card">
+                        <h3>Manufacturing Notes</h3>
+                        <h4>Cutting Methods</h4>
+                        <p>Gears can be produced by hobbing, shaping, grinding, or 3D printing. Tolerance and surface finish depend on manufacturing method.</p>
+                        <h4>Quality Control</h4>
+                        <p>Verify tooth profile, surface finish, and dimensional accuracy per ISO standards before assembly.</p>
+                        <h4>Assembly Tips</h4>
+                        <p>Ensure proper bearing support, alignment, and lubrication for optimal gear performance and longevity.</p>
+                        <h4>Typical Tolerances</h4>
+                        <p>AGMA Class 8: Commercial gears. Class 10: Good precision. Class 12: High precision (typically ±0.02-0.03mm for module 2).</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section">
+            <div class="about-container">
+                <h2>About Gear Engine</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <h3>Open-Source Gear Generation System</h3>
+                        <p>
+                            Gear Engine is a comprehensive, open-source platform for designing and generating precision gears. 
+                            It combines advanced mathematical models with an intuitive web interface, making professional gear design 
+                            accessible to engineers, makers, and students worldwide.
+                        </p>
+                        <h3>Key Capabilities</h3>
+                        <ul class="features-list">
+                            <li>✓ Generate 7 different gear types with full customization</li>
+                            <li>✓ Real-time 3D visualization of gear geometry</li>
+                            <li>✓ Export to industry-standard STEP and STL formats</li>
+                            <li>✓ Comprehensive parameter validation and constraints</li>
+                            <li>✓ Support for ISO 53 and ISO 21771 standards</li>
+                            <li>✓ Interactive parameter forms with helpful tooltips</li>
+                            <li>✓ Responsive design for all devices</li>
+                            <li>✓ Full Python API for custom integrations</li>
+                        </ul>
+                        <h3>Technology Stack</h3>
+                        <ul class="tech-list">
+                            <li><strong>Frontend:</strong> HTML5, CSS3, JavaScript (ES6+), Three.js</li>
+                            <li><strong>Backend:</strong> Python (FastAPI), Node.js (Express)</li>
+                            <li><strong>3D Computation:</strong> Advanced geometric algorithms</li>
+                            <li><strong>Export:</strong> STEP/IGES via industry libraries, STL generation</li>
+                            <li><strong>Hosting:</strong> GitHub Pages (frontend), Containerized backend</li>
+                        </ul>
+                        <h3>Standards Compliance</h3>
+                        <p>
+                            Gear Engine implements tooth profiles according to:
+                        </p>
+                        <ul class="standards-list">
+                            <li>ISO 53:1998 - Cylindrical gears with involute flanks</li>
+                            <li>ISO 21771:2007 - Spur and helical gears with involute flanks</li>
+                            <li>Industry standard pressure angles and module systems</li>
+                        </ul>
+                        <h3>Community & Contribution</h3>
+                        <p>
+                            Gear Engine is open source and welcomes contributions from the engineering community. 
+                            Whether you're a CAD software developer, mechanical engineer, or hobbyist, your contributions 
+                            help improve this tool for everyone.
+                        </p>
+                        <p>
+                            <strong>Repository:</strong> <a href="https://github.com/yourusername/gear_engine" target="_blank">github.com/yourusername/gear_engine</a>
+                        </p>
+                        <p>
+                            <strong>License:</strong> MIT - Free to use, modify, and distribute
+                        </p>
+                    </div>
+                    <div class="about-stats">
+                        <div class="stat-card">
+                            <div class="stat-number">7</div>
+                            <div class="stat-label">Gear Types</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">2</div>
+                            <div class="stat-label">Export Formats</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">100%</div>
+                            <div class="stat-label">Open Source</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">∞</div>
+                            <div class="stat-label">Possibilities</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="section">
+            <div class="content-wrapper">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <div class="faq-container">
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                            <span>What formats can I export?</span>
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Gear Engine supports STEP (.step) and STL (.stl) formats. STEP is ideal for CAD integration and manufacturing, while STL is perfect for 3D printing and simulation.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                            <span>What gear types are supported?</span>
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>We support 7 gear types: Spur (most common), Helical (higher precision), Bevel (angled shafts), Internal (enclosed), Planetary (compact), Rack (linear motion), and Worm (high reduction).</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                            <span>Can I save my designs?</span>
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Yes! Use the "Save Preset" button to save your current parameters. Your presets are stored locally in your browser and can be loaded anytime. You can also save multiple presets with different names.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                            <span>What standards are supported?</span>
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Gear Engine complies with ISO 53:1998 (involute tooth profiles) and ISO 21771:2007 (bevel gear specifications) for professional-grade gear generation.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                            <span>How do I share a design?</span>
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>After generating a gear, click "Share Design" to get a URL with your parameters encoded. You can send this link to others and they'll see the exact same gear in their browser.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                            <span>Is this open source?</span>
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Yes! Gear Engine is 100% open source under the MIT license. You can view the source code, contribute, and use it in your own projects.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Glossary Section -->
+        <section id="glossary" class="section">
+            <div class="content-wrapper">
+                <h2 class="section-title">Gear Terminology Glossary</h2>
+                <div class="glossary-container">
+                    <div class="glossary-item">
+                        <h4>Module (m)</h4>
+                        <p>The ratio of pitch diameter to number of teeth. Smaller modules create finer, smaller gears.</p>
+                    </div>
+                    <div class="glossary-item">
+                        <h4>Pitch Diameter</h4>
+                        <p>The diameter of the imaginary circle around which teeth engage. It determines gear speed ratios.</p>
+                    </div>
+                    <div class="glossary-item">
+                        <h4>Pressure Angle</h4>
+                        <p>The angle between the tooth profile and a radial line. Standard is 20°. Affects load distribution and efficiency.</p>
+                    </div>
+                    <div class="glossary-item">
+                        <h4>Backlash</h4>
+                        <p>The small gap between mating teeth. Prevents binding and compensates for thermal expansion.</p>
+                    </div>
+                    <div class="glossary-item">
+                        <h4>Face Width</h4>
+                        <p>The length of the tooth along the axis of rotation. Larger face width increases load capacity.</p>
+                    </div>
+                    <div class="glossary-item">
+                        <h4>Involute Profile</h4>
+                        <p>The mathematical curve shape of gear teeth. Provides smooth, efficient power transmission.</p>
+                    </div>
+                    <div class="glossary-item">
+                        <h4>Helix Angle</h4>
+                        <p>The angle of teeth on helical gears. Creates smoother engagement than spur gears.</p>
+                    </div>
+                    <div class="glossary-item">
+                        <h4>Tip Radius</h4>
+                        <p>The radius at the outermost point of the tooth. Affects tooth strength and interference.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section footer-logo">
+                <img src="logo.png" alt="Gear Engine" class="footer-logo-img">
+                <div>
+                    <h4>Gear Engine</h4>
+                    <p>Professional open-source gear generation</p>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#generator" data-section="generator">Generator</a></li>
+                    <li><a href="#documentation" data-section="documentation">Docs</a></li>
+                    <li><a href="#faq" data-section="faq">FAQ</a></li>
+                    <li><a href="#about" data-section="about">About</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Community</h4>
+                <ul>
+                    <li><a href="https://github.com" target="_blank" title="GitHub">GitHub Repository</a></li>
+                    <li><a href="https://twitter.com" target="_blank" title="Twitter">Twitter</a></li>
+                    <li><a href="https://linkedin.com" target="_blank" title="LinkedIn">LinkedIn</a></li>
+                    <li><a href="mailto:info@gearengine.io" title="Email">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>License & Info</h4>
+                <p>MIT License - Fully Open Source</p>
+                <p class="version-info">Version 1.0.0</p>
+                <a href="https://github.com" class="github-star-btn" target="_blank">⭐ Star on GitHub</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Gear Engine Contributors | <a href="#">Privacy</a> | <a href="#">Terms</a> | <a href="#">Changelog</a></p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/three.min.js"></script>
+    <script src="js/api-client.js"></script>
+    <script src="js/3d-viewer.js"></script>
+    <script src="js/presets-manager.js"></script>
+    <script src="js/form-manager.js"></script>
+    <script src="js/theme-manager.js"></script>
+    <script src="js/share-manager.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

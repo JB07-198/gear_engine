@@ -1,0 +1,3 @@
+# GitHub Pages requires this file to be present in the root directory.
+# It tells GitHub Pages to skip Jekyll processing and serve files as-is.
+# This is necessary for single-page applications with client-side routing.

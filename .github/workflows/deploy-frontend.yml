@@ -1,0 +1,51 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Run tests
+        run: npm test --if-present
+      
+      - name: Build
+        run: npm run build --if-present
+      
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
+          exclude-assets: '.git,server.js,package.json,package-lock.json,.env*,node_modules,*.md,DEPLOYMENT*,DOCKER*,tests,__pycache__,*.pyc,*.py'
+        
+      - name: Notify deployment
+        if: success()
+        run: |
+          echo "✅ Frontend deployed to GitHub Pages"
+          echo "📍 URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
+      
+      - name: Report failure
+        if: failure()
+        run: echo "❌ Deployment failed - check logs above"

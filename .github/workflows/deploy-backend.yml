@@ -1,0 +1,57 @@
+name: Deploy Backend API Server
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+    paths:
+      - 'server.js'
+      - 'package.json'
+      - 'Dockerfile.backend'
+      - '.github/workflows/deploy-backend.yml'
+
+jobs:
+  deploy-railway:
+    name: Deploy to Railway
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Deploy to Railway
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          npm install -g @railway/cli
+          railway link ${{ secrets.RAILWAY_PROJECT_ID }}
+          railway up --detach
+      
+      - name: Notify deployment
+        if: success()
+        run: echo "✅ Backend deployed to Railway"
+
+  deploy-docker:
+    name: Deploy Docker Image
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      
+      - name: Build Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile.backend
+          push: false
+          tags: gear-engine-api:latest
+      
+      - name: Notify build success
+        if: success()
+        run: echo "✅ Docker image built successfully"

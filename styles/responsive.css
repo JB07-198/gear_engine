@@ -1,0 +1,470 @@
+/* ========================================
+   Responsive Design
+   ======================================== */
+
+/* Tablet (768px and below) */
+@media (max-width: 768px) {
+    /* Navigation */
+    .navbar-nav {
+        display: none;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    /* Hero Section */
+    .hero {
+        grid-template-columns: 1fr;
+        padding: 3rem 1.5rem;
+        min-height: auto;
+        gap: 2rem;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.25rem;
+    }
+
+    .hero-image {
+        display: none;
+    }
+
+    /* Generator */
+    .generator-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .generator-left {
+        max-height: none;
+    }
+
+    .preview-container {
+        min-height: 400px;
+    }
+
+    /* Documentation */
+    .docs-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* About */
+    .about-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .about-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    /* Footer */
+    .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    /* Features */
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    /* Gear Type Buttons */
+    .gear-type-buttons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Form Actions */
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .form-actions .btn {
+        width: 100%;
+    }
+}
+
+/* Mobile (576px and below) */
+@media (max-width: 576px) {
+    /* Navbar */
+    .navbar-container {
+        height: 60px;
+        padding: 0 15px;
+    }
+
+    .brand-text {
+        font-size: 20px;
+    }
+
+    .logo-icon {
+        width: 35px;
+        height: 35px;
+    }
+
+    /* Hero */
+    .hero {
+        padding: 2rem 1rem;
+    }
+
+    .hero-title {
+        font-size: 1.875rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .hero-description {
+        font-size: 0.95rem;
+    }
+
+    .btn-lg {
+        padding: 12px 24px;
+        font-size: 1rem;
+    }
+
+    /* Sections */
+    .section {
+        min-height: auto;
+    }
+
+    /* Features */
+    .features {
+        padding: 2rem 1rem;
+    }
+
+    .section-title {
+        font-size: 1.75rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .feature-card {
+        padding: 1.5rem 1rem;
+    }
+
+    .feature-icon {
+        font-size: 2.5rem;
+    }
+
+    .feature-card h3 {
+        font-size: 1.1rem;
+    }
+
+    /* Generator */
+    .generator-container {
+        padding: 1rem 0;
+    }
+
+    .generator-left,
+    .generator-right {
+        padding: 1.5rem;
+    }
+
+    .generator-left h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .gear-type-buttons {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+
+    .gear-type-btn {
+        padding: 8px;
+        font-size: 0.85rem;
+    }
+
+    .form-group label {
+        font-size: 0.9rem;
+    }
+
+    .form-group input {
+        font-size: 0.95rem;
+        padding: 8px 10px;
+    }
+
+    .param-help {
+        font-size: 0.8rem;
+    }
+
+    .preview-container {
+        min-height: 300px;
+    }
+
+    /* Properties */
+    .properties-panel {
+        padding: 1rem;
+    }
+
+    .properties-panel h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .property-item {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.5rem;
+    }
+
+    /* Documentation */
+    #documentation {
+        padding: 2rem 1rem;
+    }
+
+    .docs-container h2 {
+        font-size: 1.75rem;
+    }
+
+    .doc-card {
+        padding: 1.5rem 1rem;
+    }
+
+    .doc-card h3 {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+    }
+
+    .doc-card h4 {
+        font-size: 1rem;
+        margin-top: 1rem;
+    }
+
+    /* About */
+    #about {
+        padding: 2rem 1rem;
+    }
+
+    .about-text {
+        padding: 1.5rem 1rem;
+    }
+
+    .about-text h3 {
+        font-size: 1.25rem;
+        margin-top: 1rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .about-text p {
+        font-size: 0.95rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .features-list,
+    .tech-list,
+    .standards-list {
+        line-height: 1.8;
+        margin-left: 1rem;
+    }
+
+    .about-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-card {
+        padding: 1rem;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+    }
+
+    /* Footer */
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 2rem 1rem;
+    }
+
+    .footer-bottom {
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
+
+    /* Preview Controls */
+    .preview-controls {
+        flex-wrap: wrap;
+        gap: 0.25rem;
+        padding: 0.75rem;
+    }
+
+    .preview-btn {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+    }
+
+    .preview-btn span {
+        display: none;
+    }
+
+    .preview-btn:first-child span,
+    .preview-btn span {
+        display: inline;
+    }
+}
+
+/* Extra Small Devices (320px and below) */
+@media (max-width: 320px) {
+    .hero-title {
+        font-size: 1.5rem;
+    }
+
+    .brand-text {
+        display: none;
+    }
+
+    .navbar-container {
+        justify-content: space-between;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    .feature-icon {
+        font-size: 2rem;
+    }
+
+    .feature-card h3 {
+        font-size: 1rem;
+    }
+
+    .feature-card p {
+        font-size: 0.9rem;
+    }
+
+    .doc-card h3 {
+        font-size: 1.1rem;
+    }
+
+    .doc-card h4 {
+        font-size: 0.95rem;
+    }
+
+    .doc-card p {
+        font-size: 0.9rem;
+    }
+}
+
+/* Landscape Orientation Adjustments */
+@media (max-height: 600px) {
+    .hero {
+        min-height: auto;
+        padding: 2rem 1rem;
+    }
+
+    .preview-container {
+        min-height: 300px;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .navbar,
+    .mobile-nav,
+    .footer,
+    .preview-controls,
+    .form-actions,
+    .hamburger {
+        display: none !important;
+    }
+
+    .section {
+        display: block !important;
+        opacity: 1 !important;
+        page-break-after: always;
+    }
+
+    body {
+        background-color: white;
+        color: black;
+    }
+
+    .btn {
+        border: 1px solid black;
+    }
+}
+
+/* Accessibility Improvements */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: more) {
+    :root {
+        --border-color: #666;
+        --text-secondary: #b0b0b0;
+    }
+
+    .btn-primary {
+        border: 2px solid white;
+    }
+
+    .nav-link {
+        border: 1px solid transparent;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+        border: 1px solid var(--primary-color);
+    }
+
+    /* FAQ and Glossary */
+    .faq-container {
+        max-width: 100%;
+    }
+
+    .glossary-container {
+        grid-template-columns: 1fr;
+    }
+
+    .theme-toggle {
+        margin-right: 10px;
+    }
+
+    /* Modal */
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .footer-logo {
+        flex-direction: column;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .footer-logo-img {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    :root {
+        --primary-color: #2563eb;
+        --primary-dark: #1d4ed8;
+        --dark-bg: #ffffff;
+        --light-bg: #f3f4f6;
+        --card-bg: #f9fafb;
+        --border-color: #e5e7eb;
+        --text-primary: #1f2937;
+        --text-secondary: #6b7280;
+        --text-light: #9ca3af;
+    }
+
+    body {
+        background-color: var(--light-bg);
+        color: var(--text-primary);
+    }
+}
