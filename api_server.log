@@ -1,0 +1,14 @@
+nohup: ignoring input
+Démarrage de l'API sur 0.0.0.0:5000
+Démarrage de l'API Gear Engine sur 0.0.0.0:5000
+ * Serving Flask app 'interfaces.api'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.172:5000
+[33mPress CTRL+C to quit[0m
+127.0.0.1 - - [31/Dec/2025 04:03:58] "GET /api/health HTTP/1.1" 200 -
+127.0.0.1 - - [31/Dec/2025 04:04:10] "POST /api/gear/create HTTP/1.1" 200 -
+127.0.0.1 - - [31/Dec/2025 04:04:17] "POST /api/gear/mesh HTTP/1.1" 200 -
+127.0.0.1 - - [31/Dec/2025 04:04:24] "POST /api/export/step HTTP/1.1" 200 -

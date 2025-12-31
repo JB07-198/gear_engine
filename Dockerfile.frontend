@@ -1,0 +1,22 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copy frontend
+COPY frontend/package.json frontend/package-lock.json* ./
+
+# Install dependencies
+RUN npm ci
+
+COPY frontend/src ./src
+COPY frontend/index.html ./
+COPY frontend/vite.config.js* ./
+
+# Build for production
+RUN npm run build
+
+# Expose port (dev server or serve built files)
+EXPOSE 5173
+
+# Default: run dev server (for development; production would use a static server)
+CMD ["npm", "run", "dev"]

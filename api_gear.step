@@ -1,0 +1,16 @@
+ISO-10303-21;
+HEADER;
+FILE_DESCRIPTION(('Gear Model'),'2;1');
+FILE_NAME('gear_model','2024-01-01',('Engineer'),('Company'),'','','');
+FILE_SCHEMA(('CONFIG_CONTROL_DESIGN'));
+ENDSEC;
+DATA;
+#1 = CARTESIAN_POINT(,(0.0, 0.0, 0.0));
+#2 = DIRECTION(,(0.0, 0.0, 1.0));
+#3 = DIRECTION(,(1.0, 0.0, 0.0));
+#4 = DIRECTION(,(0.0, 1.0, 0.0));
+#5 = AXIS2_PLACEMENT_3D(,#1,#2,#3);
+#6 = CIRCLE(,#5,20.0);
+#7 = EXTRUDED_AREA_SOLID(,#6,#2,10.0);
+ENDSEC;
+END-ISO-10303-21;

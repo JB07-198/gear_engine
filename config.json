@@ -1,0 +1,75 @@
+{
+  "app": {
+    "name": "Gear Engine",
+    "version": "1.0.0",
+    "description": "Système de conception et d'analyse d'engrenages",
+    "author": "Your Team",
+    "license": "MIT"
+  },
+  "api": {
+    "host": "0.0.0.0",
+    "port": 5000,
+    "debug": true,
+    "cors_enabled": true,
+    "rate_limit": 100
+  },
+  "standards": {
+    "default_standard": "ISO53",
+    "supported_standards": [
+      "ISO53",
+      "ISO21771",
+      "DIN3962"
+    ]
+  },
+  "gears": {
+    "types": [
+      "spur",
+      "helical",
+      "bevel",
+      "worm",
+      "rack",
+      "internal",
+      "planetary"
+    ],
+    "default_type": "spur"
+  },
+  "profiles": {
+    "default_profile": "involute",
+    "supported_profiles": [
+      "involute",
+      "cycloidal"
+    ]
+  },
+  "export": {
+    "formats": [
+      "STEP",
+      "STL",
+      "IGES"
+    ],
+    "stl_resolution": 0.1,
+    "step_precision": 0.001
+  },
+  "calculations": {
+    "default_pressure_angle": 20.0,
+    "default_module": 2.0,
+    "min_teeth": 12,
+    "max_teeth": 500,
+    "min_module": 0.5,
+    "max_module": 50.0
+  },
+  "materials": {
+    "default": "steel",
+    "available": [
+      "steel",
+      "cast_iron",
+      "aluminum",
+      "bronze",
+      "plastic"
+    ]
+  },
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "file": "logs/gear_engine.log"
+  }
+}
