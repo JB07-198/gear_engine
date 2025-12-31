@@ -4,9 +4,9 @@
  */
 
 class GearAPIClient {
-    constructor(baseUrl = 'http://localhost:3000/api') {
+    constructor(baseUrl = 'http://localhost:5000/api') {
         this.baseUrl = baseUrl;
-        this.timeout = 30000; // 30 seconds
+        this.timeout = 30000; // 30 seconds (not directly used by fetch)
     }
 
     /**
@@ -19,7 +19,6 @@ class GearAPIClient {
             headers: {
                 'Content-Type': 'application/json',
             },
-            timeout: this.timeout,
         };
 
         if (data) {
@@ -47,9 +46,10 @@ class GearAPIClient {
      * Generate a gear
      */
     async generateGear(gearType, parameters) {
-        return this.request('/gear/generate', 'POST', {
-            gear_type: gearType,
-            parameters,
+        // Server expects { type: <type>, params: <parameters> } at /api/gear/create
+        return this.request('/gear/create', 'POST', {
+            type: gearType,
+            params: parameters,
         });
     }
 
@@ -57,14 +57,15 @@ class GearAPIClient {
      * Export gear to STEP format
      */
     async exportStep(gearData) {
-        const url = `${this.baseUrl}/gear/export/step`;
+        // Server export endpoint is /api/export/step and expects { gear: ... }
+        const url = `${this.baseUrl}/export/step`;
         try {
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(gearData),
+                body: JSON.stringify({ gear: gearData }),
             });
 
             if (!response.ok) {
@@ -82,14 +83,14 @@ class GearAPIClient {
      * Export gear to STL format
      */
     async exportStl(gearData) {
-        const url = `${this.baseUrl}/gear/export/stl`;
+        const url = `${this.baseUrl}/export/stl`;
         try {
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(gearData),
+                body: JSON.stringify({ gear: gearData }),
             });
 
             if (!response.ok) {
@@ -107,9 +108,9 @@ class GearAPIClient {
      * Get gear information/properties
      */
     async getGearInfo(gearType, parameters) {
-        return this.request('/gear/info', 'POST', {
-            gear_type: gearType,
-            parameters,
+        // Map to server analyze endpoint
+        return this.request('/gear/analyze', 'POST', {
+            gear: { type: gearType, params: parameters },
         });
     }
 
@@ -117,9 +118,9 @@ class GearAPIClient {
      * Validate parameters for a gear type
      */
     async validateParameters(gearType, parameters) {
+        // Server expects { params: {...} }
         return this.request('/gear/validate', 'POST', {
-            gear_type: gearType,
-            parameters,
+            params: parameters,
         });
     }
 
